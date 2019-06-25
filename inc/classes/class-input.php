@@ -5,13 +5,13 @@ class Pont_input {
 
   private $field;
 
-  function __construct( $attributes ) {
-
-    $this->field = '<input type="' . $attributes['type'] . '" name="' . $attributes['name'] . '_' . $attributes['index'] . '"></input>';
+  function __construct( $attr_val, $attributes ) {
+    //var_dump($attributes);
+    $this->field = '<input type="text" value="' . $attr_val . '"></input>';
 
   }
 
-  function get_field() {
+  function html() {
     return $this->field;
   }
 

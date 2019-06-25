@@ -13,62 +13,31 @@ class Pont_Backend {
     $this->page_title       = 'Title';
     $this->page_description = 'Desc';
 
-    $this->page_modules = json_decode( '[
-      {"module":"module.html", "atts": {"text": "lorem", "textDos": "ipsum"} },
-      {"module":"module-2.html", "atts": {"textTre": "dolor"} }
-
-    ]', true );
-
-
+    $this->setup_modules();
+    
     require $_SERVER['DOCUMENT_ROOT'] . '/pont/inc/templates/admin.php';
   }
 
-  private function get_modules() {
+  //inte testat
+  private function setup_modules() {
+    $db = new Pont_Db();
+    $modules_in_page = $db->sql("SELECT `id`, `file` FROM `pont_modules` WHERE page = $this->page_id");
+    foreach ( $modules_in_page as $module ) {
+      $this->page_modules[] = new Pont_Module( $module['id'], $module['file'] );
+    }
 
-    $modules = scandir( MODULES_PATH );
+  //  $modules = scandir( MODULES_PATH );
 
-    var_dump( $modules );
+  //  var_dump( $modules );
 
   }
 
   private function print_modules() {
-
-    $index = 0;
-    foreach ($this->page_modules as $module) {
-      $file = file_get_contents(MODULES_PATH . '/' . $module['module']);
-      preg_match_all( CAPTURE, $file, $matches);
-
-      foreach ( $matches[0] as $m ) {
-        $m_stripped = strtr( $m, array(
-          '{{'  =>  '',
-          '}}'  =>  ''
-        ));
-        $m_arr = explode( ' ', $m_stripped );
-        $attributes = $this->extract_attributes( $m_arr );
-        $attributes['index'] = $index;
-        $input = new Pont_Input( $attributes );
-        $field = $input->get_field();
-        $file = str_replace( $m, $field, $file );
-      }
-      $index++;
-      echo $file;
+    foreach ($this->page_modules as $module ) {
+      $module->display_on_backend();
     }
   }
 
-  private function extract_attributes( $m_arr ) {
-
-    $attributes = [];
-    foreach ($m_arr as $m_arr_attr ) {
-      $m_arr_attr_arr = explode(':', $m_arr_attr );
-      if ( !isset( $m_arr_attr_arr[1] ) ) {
-        $attributes['name'] = $m_arr_attr_arr[0];
-        continue;
-      }
-      $attributes[$m_arr_attr_arr[0]] = $m_arr_attr_arr[1];
-    }
-    return $attributes;
-
-  }
 
 
 }
