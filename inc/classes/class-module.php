@@ -1,6 +1,5 @@
 <?php
 
-// behanla modul som post med egen meta, och page som ett arkiv
 class Pont_Module {
 
   private $id;
@@ -40,7 +39,7 @@ class Pont_Module {
    echo $file;
   }
 
-  // Inte testat
+  // TODO: sama funktion som frontend
   function display_on_backend() {
     $file = file_get_contents( MODULES_PATH . '/' . $this->file);
 

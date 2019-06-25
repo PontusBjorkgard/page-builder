@@ -10,15 +10,22 @@ class Pont_Backend {
   function __construct() {
 
     $this->page_id          = isset( $_GET['page'] ) ? $_GET['page'] : 0;
-    $this->page_title       = 'Title';
     $this->page_description = 'Desc';
 
+    $this->setup_page_data();
     $this->setup_modules();
-    
+
     require $_SERVER['DOCUMENT_ROOT'] . '/pont/inc/templates/admin.php';
   }
 
-  //inte testat
+  private function setup_page_data() {
+    $db = new Pont_Db();
+    $page_data = $db->sql("SELECT Title FROM pont_pages WHERE ID = $this->page_id");
+    $this->page_title = $page_data[0]['Title'];
+    $this->page_description = 'Desc';
+  }
+
+
   private function setup_modules() {
     $db = new Pont_Db();
     $modules_in_page = $db->sql("SELECT `id`, `file` FROM `pont_modules` WHERE page = $this->page_id");

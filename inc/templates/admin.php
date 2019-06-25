@@ -5,7 +5,9 @@
 
 <form action="/pont/inc/post.php">
 <input name="page_id" type="hidden"value="<?php echo $this->page_id ?>">
-<a href="?view=display&page=<?php echo $this->page_id ?>">Display</a>
+<label> Title:
+<input name="page_title" type="text" value="<?php echo $this->page_title ?>"></label>
+<a href="?page=<?php echo $this->page_id ?>">Display</a>
 
   <?php
 

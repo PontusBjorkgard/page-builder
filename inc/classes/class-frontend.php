@@ -9,6 +9,7 @@ class Pont_Frontend {
 
     function __construct() {
       $this->page_id = isset( $_GET['page'] ) ? $_GET['page'] : false;
+      
       $this->setup_page_data();
       $this->setup_modules();
 
