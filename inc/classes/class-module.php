@@ -53,7 +53,7 @@ class Pont_Module {
 
      $attr_val = $this->get_attribute( $m_arr[0] )[0]['attr_value'];
 
-     $input_field = new Pont_Input( $attr_val, $m_arr );
+     $input_field = new Pont_Input($this->id, $attr_val, $m_arr );
 
      $file = str_replace( $m, $input_field->html(), $file );
 

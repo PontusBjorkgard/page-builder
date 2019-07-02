@@ -19,6 +19,11 @@ function __construct() {
 function sql( $sql ) {
    $res = $this->conn->query($sql);
    $res_arr = [];
+
+  if ( is_bool($res) ) {
+    return $res;
+  }
+  
   if ($res->num_rows > 0) {
     while($row = mysqli_fetch_assoc($res)) {
          $res_arr[] = $row;
