@@ -1,13 +1,15 @@
 <?php
-
+// TODO: Modulnamn kan inte innehålla _
 class Pont_Module {
 
   private $id;
   public $file;
+  public $order;
 
-  function __construct( $id, $file ) {
+  function __construct( $id, $file, $order ) {
     $this->id = $id;
     $this->file = $file;
+    $this->order = $order;
   }
 
 
@@ -15,6 +17,7 @@ class Pont_Module {
   function get_attribute( $key ) {
     $db = new Pont_Db();
     return $db->sql( "SELECT `attr_value` FROM `pont_attributes` WHERE module='$this->id' AND attr_key='$key' " );
+
   }
 
 

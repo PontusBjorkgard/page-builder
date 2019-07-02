@@ -14,6 +14,7 @@ class Pont_Backend {
 
     $this->setup_page_data();
     $this->setup_modules();
+    $this->sort_modules();
 
     require $_SERVER['DOCUMENT_ROOT'] . '/pont/inc/templates/admin.php';
   }
@@ -28,15 +29,16 @@ class Pont_Backend {
 
   private function setup_modules() {
     $db = new Pont_Db();
-    $modules_in_page = $db->sql("SELECT `id`, `file` FROM `pont_modules` WHERE page = $this->page_id");
+    $modules_in_page = $db->sql("SELECT `id`, `file`, `order`  FROM `pont_modules` WHERE page = $this->page_id");
     foreach ( $modules_in_page as $module ) {
-      $this->page_modules[] = new Pont_Module( $module['id'], $module['file'] );
+      $this->page_modules[] = new Pont_Module( $module['id'], $module['file'], $module['order'] );
     }
+  }
 
-  //  $modules = scandir( MODULES_PATH );
-
-  //  var_dump( $modules );
-
+  private function sort_modules() {
+    usort(  $this->page_modules, function($a, $b) {
+      return strcmp($a->order, $b->order);
+    });
   }
 
   private function print_modules() {

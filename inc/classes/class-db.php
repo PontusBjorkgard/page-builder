@@ -23,7 +23,7 @@ function sql( $sql ) {
   if ( is_bool($res) ) {
     return $res;
   }
-  
+
   if ($res->num_rows > 0) {
     while($row = mysqli_fetch_assoc($res)) {
          $res_arr[] = $row;
@@ -31,7 +31,7 @@ function sql( $sql ) {
      return $res_arr;
   }
   else {
-    //var_dump( '000');
+    return;
   }
 }
 

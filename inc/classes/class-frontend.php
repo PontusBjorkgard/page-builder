@@ -9,9 +9,10 @@ class Pont_Frontend {
 
     function __construct() {
       $this->page_id = isset( $_GET['page'] ) ? $_GET['page'] : false;
-      
+
       $this->setup_page_data();
       $this->setup_modules();
+      $this->sort_modules();
 
       require $_SERVER['DOCUMENT_ROOT'] . '/pont/inc/templates/frontend.php';
     }
@@ -25,10 +26,16 @@ class Pont_Frontend {
 
     private function setup_modules() {
       $db = new Pont_Db();
-      $modules_in_page = $db->sql("SELECT `id`, `file` FROM `pont_modules` WHERE page = $this->page_id");
+      $modules_in_page = $db->sql("SELECT `id`, `file`, `order`  FROM `pont_modules` WHERE page = $this->page_id");
       foreach ( $modules_in_page as $module ) {
-        $this->page_modules[] = new Pont_Module( $module['id'], $module['file'] );
+        $this->page_modules[] = new Pont_Module( $module['id'], $module['file'], $module['order'] );
       }
+    }
+
+    private function sort_modules() {
+      usort(  $this->page_modules, function($a, $b) {
+        return strcmp($a->order, $b->order);
+      });
     }
 
     function print_modules() {
